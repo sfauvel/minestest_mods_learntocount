@@ -86,7 +86,7 @@ function generate_equation(pos, direction)
     end
     for index, value in pairs(formula) do
         minetest.set_node(current_pos, {
-             name='learntocount:symbol_' .. value,
+             name='learntocount:symbol_fix_' .. value,
              param2=param2
             })
         current_pos=vector.add(current_pos, direction)  
@@ -152,6 +152,18 @@ local function register_symbol_node(name, digit, equation_value, humanname)
 		description = humanname,
 		groups = {learntocount_util=1, snappy=3},
         value = equation_value
+    })
+    minetest.register_node('learntocount:symbol_fix_' .. name, {
+		drawtype = 'normal',
+		tiles = {'learntocount_fix.png', 'learntocount_fix.png', 'learntocount_fix.png', 
+			'learntocount_fix.png', 'learntocount_fix.png', 'learntocount_' .. name .. '.png'},
+		paramtype2 = 'facedir',
+		description = humanname,
+		groups = {learntocount_util=1, snappy=3},
+        value = equation_value,
+        can_dig = function(pos, player)
+            return false
+        end
     })
 end
 
