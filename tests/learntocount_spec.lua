@@ -270,6 +270,43 @@ describe("math_game", function()
 			
 		end)
 
+		it("generate equation with more than 1 digit", function()
+			_G.calculus = {
+				random_operation = function() 
+					return 'plus'
+				end
+			}
+
+			testutils.reinit_random({52, 71 ,9})	
+			generate_equation(vector.new(5, 3, 20), vector.new(1, 0, 0))
+
+			assert.equals("learntocount:symbol_fix_5", testutils.get_node(vector.new(5,3,20)).name)
+			assert.equals("learntocount:symbol_fix_2", testutils.get_node(vector.new(6,3,20)).name)
+			assert.equals("learntocount:symbol_fix_plus", testutils.get_node(vector.new(7,3,20)).name)
+			assert.equals("learntocount:symbol_fix_7", testutils.get_node(vector.new(8,3,20)).name)
+			assert.equals("learntocount:symbol_fix_1", testutils.get_node(vector.new(9,3,20)).name)
+			assert.equals("learntocount:symbol_fix_equals", testutils.get_node(vector.new(10,3,20)).name)
+			
+		end)
+
+		it("should generate simple division", function()
+			_G.calculus= {
+				random_operation = function() 
+					return 'divide'
+				end
+			}
+
+			testutils.reinit_random({5, 7 ,9})
+			local formula = FormulaGenerator.generate()
+			
+			assert.equals("3",      formula[1])
+			assert.equals("5",      formula[2])
+			assert.equals("divide", formula[3])
+			assert.equals("7",      formula[4])
+			assert.equals("equals", formula[5])
+			
+		end)
+
 	end)
 
 	describe("Check random", function() 

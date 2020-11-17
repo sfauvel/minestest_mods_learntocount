@@ -40,7 +40,7 @@ function find_first_equation_position(pos, move)
    
     local result = nil
     while learntocount.is_node_a_digit(current_node) do
-        result = current_pos       
+        result = current_pos
         current_pos = vector.subtract(current_pos, move)
         current_node = minetest.get_node(current_pos)
     end
@@ -68,12 +68,35 @@ calculus = {
 
 FormulaGenerator = {
     generate = function()
-        return {
-            dump(math.random(0, 9)),
-            calculus.random_operation(),
-            dump(math.random(0, 9)),
-            'equals'
-        }
+        insert_number_as_characters = function(result, number)
+            local str = dump(number)
+            for c in string.gmatch(str,".") do
+                table.insert(result, c)
+            end
+        end
+
+        local operation = calculus.random_operation()
+        local first = math.random(0, 9)
+        local second = math.random(0, 9)
+        
+        local result = {}
+
+        if operation == "divide" then
+
+            insert_number_as_characters(result, first*second)
+            table.insert(result, operation)
+            insert_number_as_characters(result, second)
+            table.insert(result, 'equals')
+            
+        else
+            insert_number_as_characters(result, first)
+            --table.insert(result, dump(first))
+            table.insert(result, operation)
+            insert_number_as_characters(result, second)
+            table.insert(result, 'equals')
+            
+        end
+        return result
     end
 } 
 
