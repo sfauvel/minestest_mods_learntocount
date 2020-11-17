@@ -1,6 +1,10 @@
 
 -- https://olivinelabs.com/busted/
 	
+function startsWith(String, Start)
+	return string.sub(String,1,string.len(Start))==Start
+end
+
 testutils = {
 	nodes={},
 	get_node = function(pos)

@@ -51,15 +51,12 @@ local function win_something(pos)
 			--minetest.set_node({x=pos.x, y=pos.y+1, z=pos.z}, minetest.registered_nodes[node_win])
 			minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, node_win.." 5")
 			
-			
-			local direction = equation_direction(pos)
-			if (direction == nil) then
-				return ""
+
+			local start, direction = equation_start_and_direction(pos)
+			clean_equation(pos)
+			if math.random(1,100) < 80 then
+				generate_equation(start, direction)
 			end
-		
-			local start = find_first_equation_position(pos, direction)
-		 
-			generate_equation(start, direction)
 		end
 	end
 

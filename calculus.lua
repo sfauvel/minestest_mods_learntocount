@@ -76,6 +76,39 @@ FormulaGenerator = {
     end
 } 
 
+ function equation_start_and_direction(pos)
+    local direction = equation_direction(pos)
+    if (direction == nil) then
+        if learntocount.is_position_a_digit(pos) then
+            direction = minetest.registered_nodes[minetest.get_node(pos).name].value
+        end
+    end
+    
+    if direction == nil then
+        return nil, nil
+    end
+
+    local start = find_first_equation_position(pos, direction)
+    return start, direction
+end
+
+function clean_equation(pos)
+    
+    local start, direction = equation_start_and_direction(pos)
+    if start == nil or direction == nil then
+        return ""
+    end
+
+    local current_pos = start 
+    local current_node = minetest.get_node(current_pos)
+    while startsWith(current_node.name, "learntocount:") do    
+        minetest.set_node(current_pos, {name="air"})
+       
+        current_pos = vector.add(current_pos, direction)
+        current_node = minetest.get_node(current_pos)
+    end
+end
+
 function generate_equation(pos, direction)
     
     local formula = FormulaGenerator.generate()
@@ -91,7 +124,6 @@ function generate_equation(pos, direction)
             })
         current_pos=vector.add(current_pos, direction)  
     end
-
 
 end
 
@@ -111,18 +143,10 @@ end
 
 function read_equation(pos)
     --print("read_equation "..dump(pos))
-    local direction = equation_direction(pos)
-    if (direction == nil) then
-        if learntocount.is_position_a_digit(pos) then
-            return minetest.registered_nodes[minetest.get_node(pos).name].value
-        else
-            return ""
-        end
-    end
-    
-    local start = find_first_equation_position(pos, direction)
-    if (start == nil)  then
-      return ""
+
+    local start, direction = equation_start_and_direction(pos)
+    if start == nil or direction == nil then
+        return ""
     end
     
     local current_pos = start 

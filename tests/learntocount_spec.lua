@@ -138,7 +138,7 @@ describe("math_game", function()
 		end)
 
 	end)
-	describe("Find first position #only", function()
+	describe("Find first position", function()
 		set_node_by_name(vector.new(30,0,20), "learntocount:symbol_3" )
 		set_node_by_name(vector.new(31,0,20), "learntocount:symbol_plus" )
 		set_node_by_name(vector.new(32,0,20), "learntocount:symbol_5" )
@@ -159,6 +159,33 @@ describe("math_game", function()
 		end)
 	end)
 
+	describe("Clean equation", function()
+		
+
+
+		it("Find first position on axe x", function()
+			set_node_by_name(vector.new(30,0,20), "learntocount:symbol_3" )
+			set_node_by_name(vector.new(31,0,20), "learntocount:symbol_plus" )
+			set_node_by_name(vector.new(32,0,20), "learntocount:symbol_5" )
+			set_node_by_name(vector.new(33,0,20), "default:stone" )
+
+
+			assert.is_true(startsWith(testutils.get_node(vector.new(30,0,20)).name, "learntocount:symbol_"))
+			assert.is_true(startsWith(testutils.get_node(vector.new(31,0,20)).name, "learntocount:symbol_"))
+			assert.is_true(startsWith(testutils.get_node(vector.new(32,0,20)).name, "learntocount:symbol_"))
+			print(4)
+			
+			clean_equation(vector.new(31,0,20))
+			
+			assert.equals(testutils.get_node(vector.new(30,0,20)).name, "air")
+			assert.equals(testutils.get_node(vector.new(31,0,20)).name, "air")
+			assert.equals(testutils.get_node(vector.new(32,0,20)).name, "air")
+			assert.equals(testutils.get_node(vector.new(33,0,20)).name, "default:stone")
+			
+		end)
+
+	end)
+
 	insulate("generate equation()", function()
 
 		_G.math={
@@ -175,7 +202,6 @@ describe("math_game", function()
 			assert.equals('multiply', calculus.random_operation())
 			assert.equals('divide', calculus.random_operation())
 				
-			
 		end)
 
 		it("generate equation on axe x", function()
@@ -246,7 +272,7 @@ describe("math_game", function()
 	end)
 
 	describe("Check random", function() 
-		it("", function()
+		it("check random operation", function()
 	
 			values = {}
 			for i = 1,100 do
@@ -259,6 +285,7 @@ describe("math_game", function()
 			assert.is_true(values["multiply"])
 			assert.is_true(values["divide"])
 		end)
+
 	end)
 
 end)
