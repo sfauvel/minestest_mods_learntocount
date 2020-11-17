@@ -1,7 +1,7 @@
 local modpath = minetest.get_modpath("learntocount")
-dofile(modpath .. "/calculus.lua")
+dofile(modpath .. "/ltc_node.lua")
+dofile(modpath .. "/ltc_calculus.lua")
 dofile(modpath .. "/ltc_mapgen.lua")
-
 
 local function startsWith(String, Start)
 	return string.sub(String,1,string.len(Start))==Start

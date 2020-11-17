@@ -39,7 +39,8 @@ function minetest.register_node(name, definition)
 end
 
 
-require("calculus")
+require("ltc_node")
+require("ltc_calculus")
 
 
 MockNode={    
