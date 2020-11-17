@@ -12,26 +12,6 @@ learntocount = {
     end
 }
 
-function is_valid_operation(operation)
-	--string.match(operation, "[0-9\+\=]")
-	
-	local evaluate_operation = loadstring("return " .. operation)
-	
-
-	if type(evaluate_operation) ~= "function" then
-		--minetest.log(operation.." is not a function")
-		return false
-	end
-
-	local result = evaluate_operation()
-	if type(result) ~= "boolean" then
-		--minetest.log(operation.." is not an equation")
-		return false
-	end 
-	
-	return result
-end
-
 function find_first_equation_position(pos, move)
     --local current_pos = vector.add(pos, move)
    -- print("find_first_equation_position: "..dump(pos))

@@ -42,4 +42,25 @@ insulate("Formula", function()
 		
 	end)
 	
+
+end)
+
+insulate("check operation is valid()", function()
+	
+	it("valid function but not an operation", function()
+		assert.is_false(formula_generator.is_valid_operation("2+2"))
+	end)
+	it("invalid function", function()
+		assert.is_false(formula_generator.is_valid_operation("2+2="))
+	end)
+
+	it("valid operation", function()
+		assert.is_true(formula_generator.is_valid_operation("2+2==4"))
+	end)
+
+
+	it("only operation characters", function()
+		assert.is_false(formula_generator.is_valid_operation("(math.pow(2, 2)+2==4)"))
+	end)
+
 end)
