@@ -14,10 +14,6 @@ _G.minetest = {
 }
 
 
-
-
-
-
 function minetest.get_node(pos)
 	--print('minetest.get_node '..pos.x.."/"..pos.y.."/"..pos.z)
 	local node = testutils.nodes[pos.x.."/"..pos.y.."/"..pos.z]
@@ -103,6 +99,10 @@ describe("math_game", function()
 		set_node_by_name(vector.new(40,0,22), "learntocount:symbol_3")
 		set_node_by_name(vector.new(40,0,21), "learntocount:symbol_plus")
 		set_node_by_name(vector.new(40,0,20), "learntocount:symbol_5")
+	
+		set_node_by_name(vector.new(50,0,20), "learntocount:symbol_fix_4" )
+		set_node_by_name(vector.new(51,0,20), "learntocount:symbol_fix_minus" )
+		set_node_by_name(vector.new(52,0,20), "learntocount:symbol_fix_7" )
 		
 		it("when nothing around", function()
 			assert.equals("", read_equation(vector.new(0, 0, 0)))
@@ -128,9 +128,15 @@ describe("math_game", function()
 		it("when learntocount node around in z axe", function()
 			assert.equals("3", read_equation(vector.new(20, 0, 20)))
 		end)
+
 		it("when several learntocount nodes around in both side in z axes", function()
 			assert.equals("3+5", read_equation(vector.new(40, 0, 20)))
 		end)
+
+		it("with fix symbols", function()
+			assert.equals("4-7", read_equation(vector.new(50, 0, 20)))
+		end)
+
 	end)
 	describe("Find first position #only", function()
 		set_node_by_name(vector.new(30,0,20), "learntocount:symbol_3" )
@@ -182,12 +188,10 @@ describe("math_game", function()
 			testutils.reinit_random({5, 7 ,9})	
 			generate_equation(vector.new(5, 3, 20), vector.new(1, 0, 0))
 
-			assert.equals("learntocount:symbol_5", testutils.get_node(vector.new(5,3,20)).name)
-			assert.equals("learntocount:symbol_plus", testutils.get_node(vector.new(6,3,20)).name)
-			assert.equals("learntocount:symbol_7", testutils.get_node(vector.new(7,3,20)).name)
-			assert.equals("learntocount:symbol_equals", testutils.get_node(vector.new(8,3,20)).name)
-			assert.equals("air", testutils.get_node(vector.new(9,3,20)).name)
-			assert.equals("air", testutils.get_node(vector.new(10,3,20)).name)
+			assert.equals("learntocount:symbol_fix_5", testutils.get_node(vector.new(5,3,20)).name)
+			assert.equals("learntocount:symbol_fix_plus", testutils.get_node(vector.new(6,3,20)).name)
+			assert.equals("learntocount:symbol_fix_7", testutils.get_node(vector.new(7,3,20)).name)
+			assert.equals("learntocount:symbol_fix_equals", testutils.get_node(vector.new(8,3,20)).name)
 			
 			assert.equals(0, testutils.get_node(vector.new(5,3,20)).param2)
 			assert.equals(0, testutils.get_node(vector.new(6,3,20)).param2)
@@ -209,14 +213,11 @@ describe("math_game", function()
 			testutils.reinit_random({5, 7 ,9})	
 			generate_equation(vector.new(5, 3, 20), vector.new(0, 0, -1))
 
-			assert.equals("learntocount:symbol_5", testutils.get_node(vector.new(5,3,20)).name)
-			assert.equals("learntocount:symbol_plus", testutils.get_node(vector.new(5,3,19)).name)
-			assert.equals("learntocount:symbol_7", testutils.get_node(vector.new(5,3,18)).name)
-			assert.equals("learntocount:symbol_equals", testutils.get_node(vector.new(5,3,17)).name)
-			assert.equals("air", testutils.get_node(vector.new(5,3,16)).name)
-			assert.equals("air", testutils.get_node(vector.new(5,3,15)).name)
-
-
+			assert.equals("learntocount:symbol_fix_5", testutils.get_node(vector.new(5,3,20)).name)
+			assert.equals("learntocount:symbol_fix_plus", testutils.get_node(vector.new(5,3,19)).name)
+			assert.equals("learntocount:symbol_fix_7", testutils.get_node(vector.new(5,3,18)).name)
+			assert.equals("learntocount:symbol_fix_equals", testutils.get_node(vector.new(5,3,17)).name)
+	
 			assert.equals(1, testutils.get_node(vector.new(5,3,20)).param2)
 			assert.equals(1, testutils.get_node(vector.new(5,3,19)).param2)
 			assert.equals(1, testutils.get_node(vector.new(5,3,18)).param2)
@@ -238,7 +239,7 @@ describe("math_game", function()
 			testutils.reinit_random({5, 7 ,9})
 
 			generate_equation(vector.new(5, 3, 20), vector.new(1, 0, 0))
-			assert.equals("learntocount:symbol_minus", testutils.get_node(vector.new(6,3,20)).name)
+			assert.equals("learntocount:symbol_fix_minus", testutils.get_node(vector.new(6,3,20)).name)
 			
 		end)
 

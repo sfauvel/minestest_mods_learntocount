@@ -91,10 +91,7 @@ function generate_equation(pos, direction)
             })
         current_pos=vector.add(current_pos, direction)  
     end
-    minetest.set_node(current_pos, {name='air'})
-    current_pos=vector.add(current_pos, direction)  
-    minetest.set_node(current_pos, {name='air'})
-    
+
 
 end
 

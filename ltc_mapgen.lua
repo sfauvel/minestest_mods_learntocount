@@ -74,24 +74,50 @@ minetest.register_on_generated(function(minp, maxp, seed)
         data[p] = symbol
     end
 
-	local direction = vector.new(1,0,0)
-    for x=minp.x,maxp.x,10 do
-		for z=minp.z,maxp.z,10 do
-			for y=minp.y,maxp.y,3 do
-				local formula = FormulaGenerator.generate()		
+    local direction = vector.new(1,0,0)
+    
+   -- for x=minp.x,maxp.x,10 do
+	--	for z=minp.z,maxp.z,10 do
+	--		for y=minp.y,maxp.y,3 do
+	--			local formula = FormulaGenerator.generate()		
+   --             if not (is_in_air(area, vector.new(x, y, z), table.getn(formula))) then
+   --               --  log_position("Build in:", vector.new(x, y, z))
+	--				for index, value in pairs(formula) do
+	--					local vi = area:index(x+index, y, z)
+	--					local symbol = minetest.get_content_id("learntocount:symbol_fix_" .. value)
+	--					data[vi] = symbol
+	--				end
+	--			
+	--			end
+	--			
+	--		end
+	--	end
+   -- end
+   -- 
+
+    local x = minp.x
+    while x < maxp.x do
+        local z = minp.z
+        while z < maxp.z do
+            local y = minp.y
+            while y < maxp.y do
+                local formula = FormulaGenerator.generate()		
                 if not (is_in_air(area, vector.new(x, y, z), table.getn(formula))) then
-                  --  log_position("Build in:", vector.new(x, y, z))
+                    --log_position("Build in:", vector.new(x, y, z))
 					for index, value in pairs(formula) do
 						local vi = area:index(x+index, y, z)
 						local symbol = minetest.get_content_id("learntocount:symbol_fix_" .. value)
 						data[vi] = symbol
 					end
 				
-				end
-				
-			end
-		end
-	end
+                end
+                y = y + math.random(1, 5)
+            end
+            z = z + math.random(1, 20)
+        end
+        x = x + math.random(1, 20)
+    end
+
 
 	manip:set_data(data)
 	manip:write_to_map()
