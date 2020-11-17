@@ -1,6 +1,10 @@
 
 -- https://olivinelabs.com/busted/
 	
+_G.core = {}
+local builtin_path="../../builtin"
+dofile(builtin_path.."/common/misc_helpers.lua")
+
 function startsWith(String, Start)
 	return string.sub(String,1,string.len(Start))==Start
 end
@@ -17,6 +21,15 @@ testutils = {
 	reinit_random = function(values)
 		testutils.random_index=0
 		testutils.random_values=values
+	end,
+	mock_random = function(first, last)
+		testutils.random_index = (testutils.random_index % table.getn(testutils.random_values)) + 1
+		return testutils.random_values[testutils.random_index];
+	end,
+	activate_mock_random = function()
+		_G.math={
+			random = testutils.mock_random
+		}
 	end,
 
 	has_value = function(tab, searchValue)

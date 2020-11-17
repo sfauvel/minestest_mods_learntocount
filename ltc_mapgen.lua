@@ -69,7 +69,7 @@ local function add_equations(minp, maxp, data, area)
         while z < maxp.z do
             local y = minp.y
             while y < maxp.y do
-                local formula = FormulaGenerator.generate()		
+                local formula = formula_generator.generate()		
                 if not (is_in_air(data, area, vector.new(x, y, z), table.getn(formula))) then
                     --log_position("Build in:", vector.new(x, y, z))
 					for index, value in pairs(formula) do

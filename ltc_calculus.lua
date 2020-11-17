@@ -66,12 +66,11 @@ calculus = {
 }
 
 
-FormulaGenerator = {
+formula_generator = {
     generate = function()
         insert_number_as_characters = function(result, number)
-            local str = dump(number)
-            for c in string.gmatch(str,".") do
-                table.insert(result, c)
+            for character in string.gmatch(dump(number),".") do
+                table.insert(result, character)
             end
         end
 
@@ -90,7 +89,6 @@ FormulaGenerator = {
             
         else
             insert_number_as_characters(result, first)
-            --table.insert(result, dump(first))
             table.insert(result, operation)
             insert_number_as_characters(result, second)
             table.insert(result, 'equals')
@@ -135,7 +133,7 @@ end
 
 function generate_equation(pos, direction)
     
-    local formula = FormulaGenerator.generate()
+    local formula = formula_generator.generate()
     local current_pos = pos
     local param2=0
     if direction.x == 0 then

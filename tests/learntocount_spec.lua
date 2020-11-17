@@ -289,24 +289,6 @@ describe("math_game", function()
 			
 		end)
 
-		it("should generate simple division", function()
-			_G.calculus= {
-				random_operation = function() 
-					return 'divide'
-				end
-			}
-
-			testutils.reinit_random({5, 7 ,9})
-			local formula = FormulaGenerator.generate()
-			
-			assert.equals("3",      formula[1])
-			assert.equals("5",      formula[2])
-			assert.equals("divide", formula[3])
-			assert.equals("7",      formula[4])
-			assert.equals("equals", formula[5])
-			
-		end)
-
 	end)
 
 	describe("Check random", function() 
