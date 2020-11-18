@@ -18,6 +18,12 @@ testutils = {
 		return testutils.nodes[pos.x.."/"..pos.y.."/"..pos.z]
 	end,
 
+	table_length = function(table)
+		local count = 0
+		for _ in pairs(table) do count = count + 1 end
+		return count
+	end,
+
 	random_index=0,
 	random_values={0},
 	reinit_random = function(values)
@@ -81,4 +87,6 @@ testutils = {
 	extends = function(obj, extension) 
 		return testutils.set_from(testutils.clone(obj), extension)
 	end
+
+
 }

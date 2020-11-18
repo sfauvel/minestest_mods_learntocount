@@ -8,7 +8,37 @@ insulate("Formula", function()
 
 	testutils.activate_mock_random()
 
+
 	insulate("Generate formula", function()
+		it("random operation", function()
+
+			testutils.reinit_random({1, 2, 3, 4})
+			assert.equals('plus', learntocode.formula_generator.random_operation())
+			assert.equals('minus', learntocode.formula_generator.random_operation())
+			assert.equals('multiply', learntocode.formula_generator.random_operation())
+			assert.equals('divide', learntocode.formula_generator.random_operation())
+				
+		end)
+
+		it("check random operation", function()
+					  
+			values = {}
+			for i = 1,100 do
+				local op = learntocode.formula_generator.random_operation()
+				values[op]=true				
+			end
+
+			assert.is_true(values["plus"])
+			assert.is_true(values["minus"])
+			assert.is_true(values["multiply"])
+			assert.is_true(values["divide"])
+
+			assert.equals(
+				testutils.table_length(learntocode.formula_generator.operations), 
+				testutils.table_length(values))
+
+		end)
+
 		it("should generate one entry per digit", function()
 			
 			testutils.reinit_random({1, 15, 72 ,9})

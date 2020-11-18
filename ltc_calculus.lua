@@ -27,58 +27,7 @@ function find_first_equation_position(pos, move)
     return result
 end
 
-
-
-calculus = {
-    operations = {"plus", "minus", "multiply", "divide"},
-    
-    random_operation= function()
-        local random_value=math.random(1, table.getn(calculus.operations))
-        for index, value in ipairs(calculus.operations) do
-            if index == random_value then
-                return value
-            end
-        end
-            
-        print("ERROR")
-        return nil
-    end
-}
-
-
-learntocode.formula_generator = {
-    generate = function()
-        insert_number_as_characters = function(result, number)
-            for character in string.gmatch(dump(number),".") do
-                table.insert(result, character)
-            end
-        end
-
-        local operation = calculus.random_operation()
-        local first = math.random(0, 9)
-        local second = math.random(0, 9)
-        
-        local result = {}
-
-        if operation == "divide" then
-
-            insert_number_as_characters(result, first*second)
-            table.insert(result, operation)
-            insert_number_as_characters(result, second)
-            table.insert(result, 'equals')
-            
-        else
-            insert_number_as_characters(result, first)
-            table.insert(result, operation)
-            insert_number_as_characters(result, second)
-            table.insert(result, 'equals')
-            
-        end
-        return result
-    end
-} 
-
- function equation_start_and_direction(pos)
+function equation_start_and_direction(pos)
     local direction = equation_direction(pos)
     if (direction == nil) then
         if learntocount.is_position_a_digit(pos) then

@@ -40,6 +40,7 @@ end
 
 
 require("ltc_node")
+require("ltc_formula")
 require("ltc_calculus")
 
 
@@ -177,15 +178,15 @@ describe("math_game", function()
 				return testutils.random_values[testutils.random_index];
 			end
 		}
-		it("random operation #only", function()
-
-			testutils.reinit_random({1, 2, 3, 4})
-			assert.equals('plus', calculus.random_operation())
-			assert.equals('minus', calculus.random_operation())
-			assert.equals('multiply', calculus.random_operation())
-			assert.equals('divide', calculus.random_operation())
-				
-		end)
+	--	it("random operation #only", function()
+--
+	--		testutils.reinit_random({1, 2, 3, 4})
+	--		assert.equals('plus', calculus.random_operation())
+	--		assert.equals('minus', calculus.random_operation())
+	--		assert.equals('multiply', calculus.random_operation())
+	--		assert.equals('divide', calculus.random_operation())
+	--			
+	--	end)
 
 		it("generate equation on axe x", function()
 			_G.calculus = {
@@ -193,6 +194,14 @@ describe("math_game", function()
 					return 'plus'
 				end
 			}
+
+			_G.learntocode = testutils.extends(learntocode, {
+				formula_generator = testutils.extends(learntocode.formula_generator, {
+					generate = function() 
+						return {"5", "plus", "7", "equals"}
+					end
+				})
+			})
 
 			testutils.reinit_random({5, 7 ,9})	
 			generate_equation(vector.new(5, 3, 20), vector.new(1, 0, 0))
@@ -215,6 +224,14 @@ describe("math_game", function()
 					return 'plus'
 				end
 			}
+
+			_G.learntocode = testutils.extends(learntocode, {
+				formula_generator = testutils.extends(learntocode.formula_generator, {
+					generate = function() 
+						return {"5", "plus", "7", "equals"}
+					end
+				})
+			})
 			function calculus.random_operation()
 				return 'plus'
 			end
@@ -234,16 +251,14 @@ describe("math_game", function()
 		end)
 
 
-		it("operation come from random_operation ", function()
-			_G.calculus= {
-				random_operation = function() 
-					return 'minus'
-				end
-			}
-
-			function calculus.random_operation()
-				return 'minus'
-			end
+		it("operation come from formula generator operation ", function()
+			_G.learntocode = testutils.extends(learntocode, {
+				formula_generator = testutils.extends(learntocode.formula_generator, {
+					generate = function() 
+						return {"5", "minus", "7", "equals"}
+					end
+				})
+			})
 
 			testutils.reinit_random({5, 7 ,9})
 
@@ -259,6 +274,13 @@ describe("math_game", function()
 				end
 			}
 
+			_G.learntocode = testutils.extends(learntocode, {
+				formula_generator = testutils.extends(learntocode.formula_generator, {
+					generate = function() 
+						return {"5", "2", "plus", "7", "1", "equals"}
+					end
+				})
+			})
 			testutils.reinit_random({52, 71 ,9})	
 			generate_equation(vector.new(5, 3, 20), vector.new(1, 0, 0))
 
@@ -273,21 +295,21 @@ describe("math_game", function()
 
 	end)
 
-	describe("Check random", function() 
-		it("check random operation", function()
-	
-			values = {}
-			for i = 1,100 do
-				local op = calculus.random_operation()
-			--	print(op)
-				values[op]=true
-			end
-			assert.is_true(values["plus"])
-			assert.is_true(values["minus"])
-			assert.is_true(values["multiply"])
-			assert.is_true(values["divide"])
-		end)
-
-	end)
+	--describe("Check random", function() 
+	--	it("check random operation", function()
+	--
+	--		values = {}
+	--		for i = 1,100 do
+	--			local op = calculus.random_operation()
+	--		--	print(op)
+	--			values[op]=true
+	--		end
+	--		assert.is_true(values["plus"])
+	--		assert.is_true(values["minus"])
+	--		assert.is_true(values["multiply"])
+	--		assert.is_true(values["divide"])
+	--	end)
+--
+	--end)
 
 end)
