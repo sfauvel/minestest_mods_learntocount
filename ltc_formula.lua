@@ -48,8 +48,8 @@ end
 
 function learntocode.formula_generator.is_valid_operation(operation)
 
-    if not string.match(operation, "^[0-9%+%=%-%/]*$") then
-        --minetest.log(operation.." is not a valide operation")
+    if not string.match(operation, "^[0-9%*%+%=%-%/]*$") then
+        --print(operation.." is not a valide operation")
         return false
     end
 	
@@ -57,7 +57,7 @@ function learntocode.formula_generator.is_valid_operation(operation)
 	
 
 	if type(evaluate_operation) ~= "function" then
-		--minetest.log(operation.." is not a function")
+		--print(operation.." is not a function")
 		return false
 	end
 

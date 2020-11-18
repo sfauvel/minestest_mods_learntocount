@@ -84,8 +84,12 @@ insulate("Formula", function()
 			assert.is_false(learntocode.formula_generator.is_valid_operation("2+2="))
 		end)
 	
-		it("valid operation", function()
+		it("valid add operation", function()
 			assert.is_true(learntocode.formula_generator.is_valid_operation("2+2==4"))
+		end)
+
+		it("valid multipliy operation", function()
+			assert.is_true(learntocode.formula_generator.is_valid_operation("1*8==8"))
 		end)
 	
 		it("only operation characters", function()
