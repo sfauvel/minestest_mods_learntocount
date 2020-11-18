@@ -43,32 +43,11 @@ require("ltc_node")
 require("ltc_formula")
 require("ltc_calculus")
 
-
-MockNode={    
-}
-function MockNode:new(o)
-    o = o or {}
-    setmetatable(o, self)
-    self.__index = self
-    return o
-end
-
 describe("math_game", function()
 	
 	set_node_by_name=function(position, name)
 		minetest.set_node(position, {name=name})
 	end
-
-	describe("xx()", function()
-		it("evaluate operation", function()		
-			assert.equal(loadstring("return " .. "2+2")(), 4)
-		end)
-
-		it("evaluate operation", function()			
-			assert.is_true(loadstring("return " .. "2+2==4")())
-		end)
-	end)
-
 
 	describe("read equation()", function()
 			
@@ -178,15 +157,6 @@ describe("math_game", function()
 				return testutils.random_values[testutils.random_index];
 			end
 		}
-	--	it("random operation #only", function()
---
-	--		testutils.reinit_random({1, 2, 3, 4})
-	--		assert.equals('plus', calculus.random_operation())
-	--		assert.equals('minus', calculus.random_operation())
-	--		assert.equals('multiply', calculus.random_operation())
-	--		assert.equals('divide', calculus.random_operation())
-	--			
-	--	end)
 
 		it("generate equation on axe x", function()
 			_G.calculus = {
@@ -295,21 +265,5 @@ describe("math_game", function()
 
 	end)
 
-	--describe("Check random", function() 
-	--	it("check random operation", function()
-	--
-	--		values = {}
-	--		for i = 1,100 do
-	--			local op = calculus.random_operation()
-	--		--	print(op)
-	--			values[op]=true
-	--		end
-	--		assert.is_true(values["plus"])
-	--		assert.is_true(values["minus"])
-	--		assert.is_true(values["multiply"])
-	--		assert.is_true(values["divide"])
-	--	end)
---
-	--end)
 
 end)
