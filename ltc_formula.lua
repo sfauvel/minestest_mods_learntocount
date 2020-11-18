@@ -1,12 +1,12 @@
 
 
-formula_generator = {}
+learntocode.formula_generator = {}
  
-formula_generator.operations = {"plus", "minus", "multiply", "divide"}
+learntocode.formula_generator.operations = {"plus", "minus", "multiply", "divide"}
     
-function formula_generator.random_operation()
-    local random_value=math.random(1, table.getn(formula_generator.operations))
-    for index, value in ipairs(formula_generator.operations) do
+function learntocode.formula_generator.random_operation()
+    local random_value=math.random(1, table.getn(learntocode.formula_generator.operations))
+    for index, value in ipairs(learntocode.formula_generator.operations) do
         if index == random_value then
             return value
         end
@@ -16,14 +16,14 @@ function formula_generator.random_operation()
     return nil
 end
 
-function formula_generator.generate()
+function learntocode.formula_generator.generate()
     insert_number_as_characters = function(result, number)
         for character in string.gmatch(dump(number),".") do
             table.insert(result, character)
         end
     end
 
-    local operation = formula_generator.random_operation()
+    local operation = learntocode.formula_generator.random_operation()
     local first = math.random(0, 9)
     local second = math.random(0, 9)
     
@@ -46,7 +46,7 @@ function formula_generator.generate()
 end
 
 
-function formula_generator.is_valid_operation(operation)
+function learntocode.formula_generator.is_valid_operation(operation)
 
     if not string.match(operation, "^[0-9%+%=%-%/]*$") then
         --minetest.log(operation.." is not a valide operation")
@@ -70,4 +70,4 @@ function formula_generator.is_valid_operation(operation)
 	return result
 end
 
-return formula_generator
+return learntocode.formula_generator

@@ -46,7 +46,7 @@ calculus = {
 }
 
 
-formula_generator = {
+learntocode.formula_generator = {
     generate = function()
         insert_number_as_characters = function(result, number)
             for character in string.gmatch(dump(number),".") do
@@ -113,7 +113,7 @@ end
 
 function generate_equation(pos, direction)
     
-    local formula = formula_generator.generate()
+    local formula = learntocode.formula_generator.generate()
     local current_pos = pos
     local param2=0
     if direction.x == 0 then

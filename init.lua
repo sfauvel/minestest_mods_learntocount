@@ -1,6 +1,6 @@
 local modpath = minetest.get_modpath("learntocount")
 dofile(modpath .. "/ltc_node.lua")
-local formula_generator = dofile(modpath .. "/ltc_formula.lua")
+local learntocode.formula_generator = dofile(modpath .. "/ltc_formula.lua")
 dofile(modpath .. "/ltc_calculus.lua")
 dofile(modpath .. "/ltc_mapgen.lua")
 
@@ -112,7 +112,7 @@ minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack
 
 	minetest.log("Equation: " .. equation)
 
-	if formula_generator.is_valid_operation(equation) then 
+	if learntocode.formula_generator.is_valid_operation(equation) then 
 	 	minetest.log("Equation '"..equation.."' is valid.")
 	 
 		win_something(pos)
