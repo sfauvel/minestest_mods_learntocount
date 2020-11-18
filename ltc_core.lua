@@ -113,3 +113,5 @@ function read_equation(pos)
     end
     return equation
 end
+
+return learntocode.core

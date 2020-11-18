@@ -3,7 +3,7 @@ _G.learntocode = {}
 learntocode.formula_generator = dofile(modpath .. "/ltc_formula.lua")
 
 dofile(modpath .. "/ltc_node.lua")
-dofile(modpath .. "/ltc_calculus.lua")
+dofile(modpath .. "/ltc_core.lua")
 dofile(modpath .. "/ltc_mapgen.lua")
 
 
