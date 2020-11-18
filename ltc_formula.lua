@@ -47,7 +47,11 @@ end
 
 
 function formula_generator.is_valid_operation(operation)
-	--string.match(operation, "[0-9\+\=]")
+
+    if not string.match(operation, "^[0-9%+%=%-%/]*$") then
+        --minetest.log(operation.." is not a valide operation")
+        return false
+    end
 	
 	local evaluate_operation = loadstring("return " .. operation)
 	
