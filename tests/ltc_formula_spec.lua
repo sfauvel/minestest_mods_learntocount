@@ -73,6 +73,8 @@ insulate("Formula", function()
 			assert.equals("equals", formula[5])
 			
 		end)
+
+		
 	end)
 
 	insulate("check operation is valid()", function()
@@ -96,6 +98,30 @@ insulate("Formula", function()
 			assert.is_false(learntocount.formula_generator.is_valid_operation("(math.pow(2, 2)+2==4)"))
 		end)
 	
+	end)
+end)
+
+insulate ("", function()
+	it("should not generate division by 0", function()
+		_G.learntocount = testutils.extends(learntocount, {
+			formula_generator = testutils.extends(learntocount.formula_generator,
+			{
+				random_operation = function() 
+					return 'divide'
+				end
+			})
+		})
+
+		values = {}
+		for i = 1,100 do
+			local formula = learntocount.formula_generator.generate()
+			local index = 1
+			while formula[index] ~= "divide" do
+				index = index + 1 
+			end
+			assert.are_not.equals("0", formula[index+1])
+		end
+		
 	end)
 end)
 

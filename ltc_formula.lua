@@ -24,18 +24,20 @@ function learntocount.formula_generator.generate()
     end
 
     local operation = learntocount.formula_generator.random_operation()
-    local first = math.random(0, 9)
-    local second = math.random(0, 9)
     
     local result = {}
 
     if operation == "divide" then
+        local first = math.random(0, 9)
+        local second = math.random(1, 9)
         insert_number_as_characters(result, first*second)
         table.insert(result, operation)
         insert_number_as_characters(result, second)
         table.insert(result, 'equals')
         
     else
+        local first = math.random(0, 9)
+        local second = math.random(0, 9)    
         insert_number_as_characters(result, first)
         table.insert(result, operation)
         insert_number_as_characters(result, second)
