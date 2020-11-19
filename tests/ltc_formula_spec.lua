@@ -73,6 +73,31 @@ insulate("Formula", function()
 			assert.equals("equals", formula[5])
 			
 		end)
+		it("should not generate minus with negative result", function()
+			_G.learntocount = testutils.extends(learntocount, {
+				formula_generator = testutils.extends(learntocount.formula_generator,
+				{
+					random_operation = function() 
+						return 'minus'
+					end
+				})
+			})
+	
+			testutils.reinit_random({9, 4 ,0})
+			local formula = learntocount.formula_generator.generate()
+			
+			assert.equals("9",      formula[1])
+			assert.equals("minus",  formula[2])
+			assert.equals("4",      formula[3])
+			
+			testutils.reinit_random({3, 7 ,0})
+			local formula = learntocount.formula_generator.generate()
+			
+			assert.equals("7",      formula[1])
+			assert.equals("minus",  formula[2])
+			assert.equals("3",      formula[3])
+			
+		end)
 
 		
 	end)
@@ -123,6 +148,8 @@ insulate ("", function()
 		end
 		
 	end)
+
+	
 end)
 
 
