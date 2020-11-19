@@ -16,23 +16,35 @@ local function is_in_air(data, area, position, length)
 end
 
 
-
 local function add_some_simple_symbols(minp, maxp, data, area) 
     local c_air = minetest.get_content_id("air")	
 
+    local function node_under(x, y, z)
+        return minetest.get_node(vector.new(x,y-1,z))
+    end
+
+    local function startsWith(String, Start)
+        return string.sub(String,1,string.len(Start))==Start
+    end
+
+    local function is_node_to_crush(node_name)
+        return minetest.get_item_group(node_name, "flower") == 0 
+                or node_name == "default:snow"
+                or startsWith(node_name, "flowers:")
+    end
+
     local function add_symbol_on_surface(positions_to_add, area, x, z, startY, endY) 
         for y=startY,endY,1 do
-            local vi = area:index(x, y, z)
-            local under = area:index(x, y-1, z)
+            local node_index = area:index(x, y, z)
+            local node_under_index = area:index(x, y-1, z)
 
-            if data[vi] == c_air  and data[under] ~= c_air then
-                local name = minetest.get_node(vector.new(x,y-1,z)).name
-                if minetest.get_item_group(name, "flower") == 0 
-                    or name == "default:snow"
-                    or string.sub(name,1,string.len("flowers:"))=="flowers" then
-                        vi = area:index(x, y-1, z)
+            if data[node_index] == c_air  and data[node_under_index] ~= c_air then
+                local name = node_under(x,y,z).name
+                if is_node_to_crush(name) then
+                    node_index = area:index(x, y-1, z)                  
                 end
-                table.insert(positions_to_add, vi)
+                
+                table.insert(positions_to_add, node_index)
             end 
         end
     end

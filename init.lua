@@ -10,6 +10,9 @@ dofile(modpath .. "/ltc_mapgen.lua")
 local function win_something(pos)
 	local count = 0
 	minetest.log("registered_nodes: " .. dump(table.getn(minetest.registered_nodes)))
+	
+	minetest.sound_play("learntocount_winning")
+
 	for i,line in pairs(minetest.registered_nodes) do
 		count = count + 1
 	end
@@ -66,8 +69,8 @@ local function normalize_digit_orientation(pos, newnode)
 
 	local direction = newnode.param2 % 2
 	if isDigitXA then direction = 0 end
-	if isDigitZA then direction = 1 end
 	if isDigitXB then direction = 0 end
+	if isDigitZA then direction = 1 end
 	if isDigitZB then direction = 1 end
 
  	if direction ~= newnode.param2 then
@@ -79,6 +82,7 @@ local function normalize_digit_orientation(pos, newnode)
 end
 
 minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
+
 	if not learntocount.is_node_a_digit(newnode) then
 		return
 	end
