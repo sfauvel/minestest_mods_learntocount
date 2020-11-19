@@ -3,6 +3,8 @@
 learntocount.formula_generator = {}
  
 learntocount.formula_generator.operations = {"plus", "minus", "multiply", "divide"}
+
+
     
 function learntocount.formula_generator.random_operation()
     local random_value=math.random(1, table.getn(learntocount.formula_generator.operations))
@@ -17,34 +19,46 @@ function learntocount.formula_generator.random_operation()
 end
 
 function learntocount.formula_generator.generate()
-    insert_number_as_characters = function(result, number)
+
+    local MAX_NUMBER_VALUE = 9
+
+    local insert_number_as_characters = function(result, number)
         for character in string.gmatch(dump(number),".") do
             table.insert(result, character)
         end
     end
+    local binary_operation=function(left, operator, right)
+        local result = {}
+        insert_number_as_characters(result, left)
+        table.insert(result, operator)
+        insert_number_as_characters(result, right)
+        table.insert(result, 'equals')
+        return result
+    end
+
+    local operations_builder = {}
+    operations_builder["divide"]=function()
+        local result = {}
+        local first = math.random(0, MAX_NUMBER_VALUE)
+        local second = math.random(1, MAX_NUMBER_VALUE) -- Start at 1 to avoid division by 0
+        return binary_operation(first*second, "divide", second)
+    end
+    default_operation_builder=function(operator)
+        local result = {}
+        local first = math.random(0, MAX_NUMBER_VALUE)
+        local second = math.random(0, MAX_NUMBER_VALUE)    
+        return binary_operation(first, operator, second)
+    end
 
     local operation = learntocount.formula_generator.random_operation()
     
-    local result = {}
-
-    if operation == "divide" then
-        local first = math.random(0, 9)
-        local second = math.random(1, 9)
-        insert_number_as_characters(result, first*second)
-        table.insert(result, operation)
-        insert_number_as_characters(result, second)
-        table.insert(result, 'equals')
-        
+    local builder = operations_builder[operation]
+    if (builder ~= nil) then
+        return builder()
     else
-        local first = math.random(0, 9)
-        local second = math.random(0, 9)    
-        insert_number_as_characters(result, first)
-        table.insert(result, operation)
-        insert_number_as_characters(result, second)
-        table.insert(result, 'equals')
-        
+        return default_operation_builder(operation)
     end
-    return result
+    
 end
 
 
