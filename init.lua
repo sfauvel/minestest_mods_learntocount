@@ -8,34 +8,38 @@ dofile(modpath .. "/ltc_mapgen.lua")
 
 
 local function win_something(pos)
-	local count = 0
-	minetest.log("registered_nodes: " .. dump(table.getn(minetest.registered_nodes)))
-	
+
+	function insert_table(final_table, table_to_add)
+		local count = 0
+		for key,obj in pairs(table_to_add) do
+			count = count + 1
+			table.insert(final_table, key)
+		end
+		return count
+	end
+
+
+	all_registered_objects={}
+	local count = insert_table(all_registered_objects, minetest.registered_items)
+		+ insert_table(all_registered_objects, minetest.registered_nodes)
+		+ insert_table(all_registered_objects, minetest.registered_craftitems)
+		+ insert_table(all_registered_objects, minetest.registered_tools)
+
 	minetest.sound_play("learntocount_winning")
 
-	for i,line in pairs(minetest.registered_nodes) do
-		count = count + 1
-	end
-	minetest.log("Registerd nodes: "..dump(count))
+
 	local index_win = math.random(count)
-	count = 0
-	for i,line in pairs(minetest.registered_nodes) do
-		count = count + 1
-		if (count == index_win) then
-			local node_win = i
-			minetest.log("Win "..node_win)
-			--minetest.set_node({x=pos.x, y=pos.y+1, z=pos.z}, minetest.registered_nodes[node_win])
-			minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, node_win.." 5")
-			
 
-			local start, direction = learntocount.core.equation_start_and_direction(pos)
-			learntocount.core.clean_equation(pos)
-			if math.random(1,100) < 80 then
-				learntocount.core.generate_equation(start, direction)
-			end
-		end
+	local node_win = all_registered_objects[index_win]
+	minetest.log("Win "..node_win)
+	minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, node_win.." "..math.random(1, 10))
+	
+	-- Must be calculated before cleaning nodes
+	local start, direction = learntocount.core.equation_start_and_direction(pos)
+	learntocount.core.clean_equation(pos)
+	if math.random(1,100) < 80 then
+		learntocount.core.generate_equation(start, direction)
 	end
-
 end
 
 local function normalize_digit_orientation(pos, newnode)
