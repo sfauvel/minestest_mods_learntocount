@@ -1,42 +1,11 @@
 local modpath = minetest.get_modpath("learntocount")
-_G.learntocode = {}
-learntocode.formula_generator = dofile(modpath .. "/ltc_formula.lua")
+_G.learntocount = {}
+learntocount.formula_generator = dofile(modpath .. "/ltc_formula.lua")
 
 dofile(modpath .. "/ltc_node.lua")
 dofile(modpath .. "/ltc_core.lua")
 dofile(modpath .. "/ltc_mapgen.lua")
 
-
-local function startsWith(String, Start)
-	return string.sub(String,1,string.len(Start))==Start
-end
- 
-
-minetest.register_on_player_receive_fields(function(sender, formname, fields)
-
-	minetest.log('learntocount: register_on_player_receive_fields')
-	if formname:find('learntocount:lab_checker_') == 1 then
-		local x, y, z = formname:match('learntocount:lab_checker_(.-)_(.-)_(.*)')
-		local pos = {x=tonumber(x), y=tonumber(y), z=tonumber(z)}
-		--print("Checker at " .. minetest.pos_to_string(pos) .. " got " .. dump(fields))
-		local meta = minetest.get_meta(pos)
-		if fields.b_saytext ~= nil then -- If we get a checkbox value we need to save that immediately because they are not sent on clicking 'Save' (due to a bug in minetest)
-			meta:set_string('b_saytext', fields.b_saytext)
-		end
-		if fields.b_dispense ~= nil then -- ditto
-			meta:set_string('b_dispense', fields.b_dispense)
-		end
-		if fields.b_lock ~= nil then -- ditto
-			meta:set_string('b_lock', fields.b_lock)
-		end
-		if fields.save ~= nil then
-			meta:set_string('solution', fields.solution)
-			if meta:get_string('b_saytext') == 'true' then
-				meta:set_string('s_saytext', fields.s_saytext)
-			end
-		end
-	end
-end)
 
 local function win_something(pos)
 	local count = 0
@@ -66,18 +35,16 @@ local function win_something(pos)
 
 end
 
-minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
-
+local function normalize_digit_orientation(pos, newnode)
 	local nodeXA = minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z})
 	local nodeXB = minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z})
 	local nodeZA = minetest.get_node({x=pos.x,   y=pos.y, z=pos.z-1})
 	local nodeZB = minetest.get_node({x=pos.x,   y=pos.y, z=pos.z+1})
 
-	local isDigitXA = startsWith(nodeXA.name, "learntocount:")
-	local isDigitXB = startsWith(nodeXB.name, "learntocount:")
-	local isDigitZA = startsWith(nodeZA.name, "learntocount:")
-	local isDigitZB = startsWith(nodeZB.name, "learntocount:")
-
+	local isDigitXA = learntocount.is_node_a_digit(nodeXA)
+	local isDigitXB = learntocount.is_node_a_digit(nodeXB)
+	local isDigitZA = learntocount.is_node_a_digit(nodeZA)
+	local isDigitZB = learntocount.is_node_a_digit(nodeZB)
 
 	if ((isDigitXA or isDigitXB) and (isDigitZA or isDigitZB)) then 
 		minetest.log("Digit not possible here because intersection between X and Z")
@@ -109,20 +76,26 @@ minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack
  		minetest.set_node(pos, newnode)
  	end
  
+end
+
+minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
+	if not learntocount.is_node_a_digit(newnode) then
+		return
+	end
+
+	normalize_digit_orientation(pos, newnode)
 
     local equation = read_equation(pos)
 
-	minetest.log("Equation: " .. equation)
+	--minetest.log("Equation: " .. equation)
 
-	minetest.log("learntocode.formula_generator "..dump(learntocode.formula_generator))
-	if learntocode.formula_generator.is_valid_operation(equation) then 
+	--minetest.log("learntocount.formula_generator "..dump(learntocount.formula_generator))
+	if learntocount.formula_generator.is_valid_operation(equation) then 
 	 	minetest.log("Equation '"..equation.."' is valid.")
 	 
 		win_something(pos)
-	
-
-   else
-      minetest.log("Equation '"..equation.."' is INVALID.")
+    else
+      	minetest.log("Equation '"..equation.."' is INVALID.")
 	end
   
 end)

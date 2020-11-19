@@ -146,8 +146,8 @@ describe("math_game", function()
 
 		it("generate equation on axe x", function()
 			
-			_G.learntocode = testutils.extends(learntocode, {
-				formula_generator = testutils.extends(learntocode.formula_generator, {
+			_G.learntocount = testutils.extends(learntocount, {
+				formula_generator = testutils.extends(learntocount.formula_generator, {
 					generate = function() 
 						return {"5", "plus", "7", "equals"}
 					end
@@ -170,8 +170,8 @@ describe("math_game", function()
 
 		it("generate equation on axe z", function()
 
-			_G.learntocode = testutils.extends(learntocode, {
-				formula_generator = testutils.extends(learntocode.formula_generator, {
+			_G.learntocount = testutils.extends(learntocount, {
+				formula_generator = testutils.extends(learntocount.formula_generator, {
 					generate = function() 
 						return {"5", "plus", "7", "equals"}
 					end
@@ -193,8 +193,8 @@ describe("math_game", function()
 
 
 		it("operation come from formula generator operation ", function()
-			_G.learntocode = testutils.extends(learntocode, {
-				formula_generator = testutils.extends(learntocode.formula_generator, {
+			_G.learntocount = testutils.extends(learntocount, {
+				formula_generator = testutils.extends(learntocount.formula_generator, {
 					generate = function() 
 						return {"5", "minus", "7", "equals"}
 					end
@@ -213,8 +213,8 @@ describe("math_game", function()
 				end
 			}
 
-			_G.learntocode = testutils.extends(learntocode, {
-				formula_generator = testutils.extends(learntocode.formula_generator, {
+			_G.learntocount = testutils.extends(learntocount, {
+				formula_generator = testutils.extends(learntocount.formula_generator, {
 					generate = function() 
 						return {"5", "2", "plus", "7", "1", "equals"}
 					end

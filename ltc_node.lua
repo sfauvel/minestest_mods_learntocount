@@ -22,8 +22,20 @@ local function register_symbol_node(name, digit, equation_value, humanname)
     })
 end
 
-local s = '0123456789'
-for i in s:gmatch('.') do
+local function startsWith(String, Start)
+	return string.sub(String,1,string.len(Start))==Start
+end
+ 
+learntocount.is_node_a_digit = function(node)
+	return node~=nil and startsWith(node.name, "learntocount:")
+end
+
+learntocount.is_position_a_digit = function(position)
+    return position~=nil and learntocount.is_node_a_digit(minetest.get_node(position))
+end
+
+local digits = '0123456789'
+for i in digits:gmatch('.') do
 	register_symbol_node(i, i, i, i)
 end
 

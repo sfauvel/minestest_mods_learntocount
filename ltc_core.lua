@@ -1,16 +1,10 @@
 
+
+learntocount.core = {}
+
 local function startsWith(String, Start)
 	return string.sub(String,1,string.len(Start))==Start
 end
-
-learntocount = {
-    is_position_a_digit = function(position)
-        return position~=nil and learntocount.is_node_a_digit(minetest.get_node(position))
-    end,
-    is_node_a_digit = function(node)
-        return node~=nil and startsWith(node.name, "learntocount:")
-    end
-}
 
 function find_first_equation_position(pos, move)
     --local current_pos = vector.add(pos, move)
@@ -62,7 +56,7 @@ end
 
 function generate_equation(pos, direction)
     
-    local formula = learntocode.formula_generator.generate()
+    local formula = learntocount.formula_generator.generate()
     local current_pos = pos
     local param2=0
     if direction.x == 0 then
@@ -114,4 +108,4 @@ function read_equation(pos)
     return equation
 end
 
-return learntocode.core
+return learntocount.core

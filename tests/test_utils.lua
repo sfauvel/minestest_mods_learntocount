@@ -2,7 +2,7 @@
 -- https://olivinelabs.com/busted/
 	
 _G.core = {}
-_G.learntocode = {}
+_G.learntocount = {}
 
 local builtin_path="../../builtin"
 dofile(builtin_path.."/common/misc_helpers.lua")
@@ -54,9 +54,9 @@ testutils = {
 	-- To extends an object, you can redefine it with 'extends' methods and pass functions to add or redefined.
 	-- You must redifined first level after _G otherwise it will not be restored at the end of the test.
 	-- First option redefining first level:
-	--	_G.learntocode = {				
+	--	_G.learntocount = {				
 	--	
-	--		formula_generator = expand(learntocode.formula_generator,
+	--		formula_generator = expand(learntocount.formula_generator,
 	--		{
 	--			random_operation = function() 
 	--				return 'divide'
@@ -65,8 +65,8 @@ testutils = {
 	--	}
 
 	-- Second option extending first level:
-	--_G.learntocode = testutils.extends(learntocode, {
-	--	formula_generator = testutils.extends(learntocode.formula_generator,
+	--_G.learntocount = testutils.extends(learntocount, {
+	--	formula_generator = testutils.extends(learntocount.formula_generator,
 	--	{
 	--		random_operation = function() 
 	--			return 'divide'

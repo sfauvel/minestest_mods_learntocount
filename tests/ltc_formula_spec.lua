@@ -13,10 +13,10 @@ insulate("Formula", function()
 		it("random operation", function()
 
 			testutils.reinit_random({1, 2, 3, 4})
-			assert.equals('plus', learntocode.formula_generator.random_operation())
-			assert.equals('minus', learntocode.formula_generator.random_operation())
-			assert.equals('multiply', learntocode.formula_generator.random_operation())
-			assert.equals('divide', learntocode.formula_generator.random_operation())
+			assert.equals('plus', learntocount.formula_generator.random_operation())
+			assert.equals('minus', learntocount.formula_generator.random_operation())
+			assert.equals('multiply', learntocount.formula_generator.random_operation())
+			assert.equals('divide', learntocount.formula_generator.random_operation())
 				
 		end)
 
@@ -24,7 +24,7 @@ insulate("Formula", function()
 					  
 			values = {}
 			for i = 1,100 do
-				local op = learntocode.formula_generator.random_operation()
+				local op = learntocount.formula_generator.random_operation()
 				values[op]=true				
 			end
 
@@ -34,7 +34,7 @@ insulate("Formula", function()
 			assert.is_true(values["divide"])
 
 			assert.equals(
-				testutils.table_length(learntocode.formula_generator.operations), 
+				testutils.table_length(learntocount.formula_generator.operations), 
 				testutils.table_length(values))
 
 		end)
@@ -42,7 +42,7 @@ insulate("Formula", function()
 		it("should generate one entry per digit", function()
 			
 			testutils.reinit_random({1, 15, 72 ,9})
-			local formula = learntocode.formula_generator.generate()
+			local formula = learntocount.formula_generator.generate()
 			
 			assert.equals("1",      formula[1])
 			assert.equals("5",      formula[2])
@@ -54,8 +54,8 @@ insulate("Formula", function()
 		end)
 
 		it("should generate simple division", function()
-			_G.learntocode = testutils.extends(learntocode, {
-				formula_generator = testutils.extends(learntocode.formula_generator,
+			_G.learntocount = testutils.extends(learntocount, {
+				formula_generator = testutils.extends(learntocount.formula_generator,
 				{
 					random_operation = function() 
 						return 'divide'
@@ -64,7 +64,7 @@ insulate("Formula", function()
 			})
 
 			testutils.reinit_random({5, 7 ,9})
-			local formula = learntocode.formula_generator.generate()
+			local formula = learntocount.formula_generator.generate()
 			
 			assert.equals("3",      formula[1])
 			assert.equals("5",      formula[2])
@@ -78,22 +78,22 @@ insulate("Formula", function()
 	insulate("check operation is valid()", function()
 	
 		it("valid function but not an operation", function()
-			assert.is_false(learntocode.formula_generator.is_valid_operation("2+2"))
+			assert.is_false(learntocount.formula_generator.is_valid_operation("2+2"))
 		end)
 		it("invalid function", function()
-			assert.is_false(learntocode.formula_generator.is_valid_operation("2+2="))
+			assert.is_false(learntocount.formula_generator.is_valid_operation("2+2="))
 		end)
 	
 		it("valid add operation", function()
-			assert.is_true(learntocode.formula_generator.is_valid_operation("2+2==4"))
+			assert.is_true(learntocount.formula_generator.is_valid_operation("2+2==4"))
 		end)
 
 		it("valid multipliy operation", function()
-			assert.is_true(learntocode.formula_generator.is_valid_operation("1*8==8"))
+			assert.is_true(learntocount.formula_generator.is_valid_operation("1*8==8"))
 		end)
 	
 		it("only operation characters", function()
-			assert.is_false(learntocode.formula_generator.is_valid_operation("(math.pow(2, 2)+2==4)"))
+			assert.is_false(learntocount.formula_generator.is_valid_operation("(math.pow(2, 2)+2==4)"))
 		end)
 	
 	end)
