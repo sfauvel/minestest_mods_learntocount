@@ -43,7 +43,8 @@ function learntocount.formula_generator.generate()
         local second = math.random(1, MAX_NUMBER_VALUE) -- Start at 1 to avoid division by 0
         return binary_operation(first*second, "divide", second)
     end
-    default_operation_builder=function(operator)
+    
+    local default_operation_builder=function(operator)
         local result = {}
         local first = math.random(0, MAX_NUMBER_VALUE)
         local second = math.random(0, MAX_NUMBER_VALUE)    

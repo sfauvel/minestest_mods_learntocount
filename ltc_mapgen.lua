@@ -5,9 +5,11 @@ end
 
 local function is_in_air(data, area, position, length)
     local c_air = minetest.get_content_id("air")	
+    local c_water = minetest.get_content_id("default:water_source")
+    	
     for index=0,length do
         local vi = area:index(position.x+index, position.y, position.z)
-        if data[vi] == c_air then
+        if data[vi] == c_air or data[vi] == c_water then
             return true
         end 
     end
@@ -18,7 +20,8 @@ end
 
 local function add_some_simple_symbols(minp, maxp, data, area) 
     local c_air = minetest.get_content_id("air")	
-
+    local c_water = minetest.get_content_id("default:water_source")	
+    
     local function node_under(x, y, z)
         return minetest.get_node(vector.new(x,y-1,z))
     end
@@ -38,12 +41,15 @@ local function add_some_simple_symbols(minp, maxp, data, area)
             local node_index = area:index(x, y, z)
             local node_under_index = area:index(x, y-1, z)
 
-            if data[node_index] == c_air  and data[node_under_index] ~= c_air then
+            if (data[node_index] == c_air or data[node_index] == c_water) 
+                and data[node_under_index] ~= c_air 
+                and data[node_under_index] ~= c_water 
+                  then
                 local name = node_under(x,y,z).name
                 if is_node_to_crush(name) then
                     node_index = area:index(x, y-1, z)                  
                 end
-                
+              
                 table.insert(positions_to_add, node_index)
             end 
         end
