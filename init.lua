@@ -28,10 +28,10 @@ local function win_something(pos)
 			minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, node_win.." 5")
 			
 
-			local start, direction = equation_start_and_direction(pos)
-			clean_equation(pos)
+			local start, direction = learntocount.core.equation_start_and_direction(pos)
+			learntocount.core.clean_equation(pos)
 			if math.random(1,100) < 80 then
-				generate_equation(start, direction)
+				learntocount.core.generate_equation(start, direction)
 			end
 		end
 	end
@@ -89,7 +89,7 @@ minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack
 
 	normalize_digit_orientation(pos, newnode)
 
-    local equation = read_equation(pos)
+    local equation = learntocount.core.read_equation(pos)
 
 	--minetest.log("Equation: " .. equation)
 

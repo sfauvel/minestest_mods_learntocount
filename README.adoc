@@ -25,8 +25,9 @@ If you need more assistance with this, please refer to link:https://wiki.minetes
 * 'Digit blocks': A-Z 0-9 and operators
 * 'Map generator'
 
-== Tests
+== Development
 
+=== Tests
 
 To run tests you can install link:https://rubenwardy.com/minetest_modding_book/en/quality/unit_testing.html[install busted and run tests].
 
