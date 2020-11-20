@@ -36,41 +36,75 @@ local function add_some_simple_symbols(minp, maxp, data, area)
                 or startsWith(node_name, "flowers:")
     end
 
+    local function add_symbol_on_something(positions_to_add, area, x, y, z) 
+
+        local node_index = area:index(x, y, z)
+        local node_under_index = area:index(x, y-1, z)
+
+        if data[node_under_index] ~= c_air 
+            and data[node_under_index] ~= c_water 
+                then
+            local name = node_under(x,y,z).name
+            if is_node_to_crush(name) then
+                node_index = area:index(x, y-1, z)                  
+            end
+            
+            table.insert(positions_to_add, node_index)
+        end 
+    end
+
     local function add_symbol_on_surface(positions_to_add, area, x, z, startY, endY) 
         for y=startY,endY,1 do
             local node_index = area:index(x, y, z)
-            local node_under_index = area:index(x, y-1, z)
-
-            if (data[node_index] == c_air or data[node_index] == c_water) 
-                and data[node_under_index] ~= c_air 
-                and data[node_under_index] ~= c_water 
-                  then
-                local name = node_under(x,y,z).name
-                if is_node_to_crush(name) then
-                    node_index = area:index(x, y-1, z)                  
-                end
-              
-                table.insert(positions_to_add, node_index)
-            end 
-        end
-    end
-
-
-    local positions_to_add={}
-    local FREQUENCY=100
-    local next = math.random(1,FREQUENCY)
-    local current = 0
-    for x=minp.x,maxp.x,1 do
-        for z=minp.z,maxp.z,1 do
-            current = current + 1
-            if current >= next then
-                current = 0
-                next = math.random(1,FREQUENCY)
-
-                add_symbol_on_surface(positions_to_add, area, x, z, minp.y,maxp.y)
+  
+            if (data[node_index] == c_air or data[node_index] == c_water) then
+                add_symbol_on_something(positions_to_add, area, x, y, z)
             end
         end
     end
+
+    local function add_symbol_only_on_surface(positions_to_add, area, minp, maxp) 
+        local FREQUENCY=100
+        local next = math.random(1,FREQUENCY)
+
+        local current = 0
+        for x=minp.x,maxp.x,1 do
+            for z=minp.z,maxp.z,1 do
+                current = current + 1
+                if current >= next then
+                    current = 0
+                    next = math.random(1,FREQUENCY)
+
+                    add_symbol_on_surface(positions_to_add, area, x, z, minp.y,maxp.y)
+                end
+            end
+        end
+    end
+
+    local function add_symbol_also_under_surface(positions_to_add, area, minp, maxp) 
+        local FREQUENCY=500
+        local next = math.random(1,FREQUENCY)
+
+        local current = 0
+        for x=minp.x,maxp.x,1 do
+            for z=minp.z,maxp.z,1 do
+                for y=minp.y,maxp.y,1 do
+                    current = current + 1
+                    if current >= next then
+                        current = 0
+                        next = math.random(1,FREQUENCY)
+
+                        add_symbol_on_something(positions_to_add, area, x, y, z)
+                    end
+                end
+            end
+        end
+    end
+
+    local positions_to_add={}
+    
+    --add_symbol_only_on_surface(positions_to_add, area, minp, maxp)
+    add_symbol_also_under_surface(positions_to_add, area, minp, maxp)
 
     for i,p in ipairs(positions_to_add) do
         local symbol = minetest.get_content_id("learntocount:symbol_" .. math.random(0,9))	 
@@ -113,8 +147,11 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	--minetest.chat_send_all(debug)
 
 	local manip = minetest.get_voxel_manip()
-	local e1, e2 = manip:read_from_map(minp, maxp)
+    local e1, e2 = manip:read_from_map(minp, maxp)
+    print("pos:"..minetest.pos_to_string(minp).."/"..minetest.pos_to_string(maxp))
+    print("area:"..minetest.pos_to_string(e1).."/"..minetest.pos_to_string(e2))
 	local area = VoxelArea:new{MinEdge=e1, MaxEdge=e2}
+--    print("index:"..dump(area:index(e1))..":"..dump(area:index(e2)))
 	local data = manip:get_data()
 
     add_some_simple_symbols(minp, maxp, data, area)
