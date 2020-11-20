@@ -113,7 +113,13 @@ local function add_some_simple_symbols(minp, maxp, data, area)
 end
 
 local function add_equations(minp, maxp, data, area) 
-    local direction = vector.new(1,0,0)
+    function random_direction() 
+        if math.random(0,1) == 0 then
+            return vector.new(1,0,0)
+        else
+            return vector.new(0,0,1)
+        end
+    end
     
     local x = minp.x
     while x < maxp.x do
@@ -121,11 +127,15 @@ local function add_equations(minp, maxp, data, area)
         while z < maxp.z do
             local y = minp.y
             while y < maxp.y do
-                local formula = learntocount.formula_generator.generate()		
-                if not (is_in_air(data, area, vector.new(x, y, z), table.getn(formula))) then
-                    --log_position("Build in:", vector.new(x, y, z))
-					for index, value in pairs(formula) do
-						local vi = area:index(x+index, y, z)
+                local formula = learntocount.formula_generator.generate()
+                local equation_position=vector.new(x, y, z)		
+             
+                if not (is_in_air(data, area, equation_position, table.getn(formula))) then
+                    local direction = random_direction()
+                   
+                    for index, value in pairs(formula) do
+                        equation_position=vector.add(equation_position, direction)
+                        local vi = area:index(equation_position.x, equation_position.y, equation_position.z)
 						local symbol = minetest.get_content_id("learntocount:symbol_fix_" .. value)
 						data[vi] = symbol
 					end
