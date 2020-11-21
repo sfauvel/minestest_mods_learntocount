@@ -112,7 +112,7 @@ local function add_some_simple_symbols(minp, maxp, data, area)
     end
 end
 
-local function add_equations(minp, maxp, data, area) 
+local function add_equations(minp, maxp, data, param2_data, area) 
     function random_direction() 
         if math.random(0,1) == 0 then
             return vector.new(1,0,0)
@@ -120,7 +120,7 @@ local function add_equations(minp, maxp, data, area)
             return vector.new(0,0,1)
         end
     end
-    
+
     local x = minp.x
     while x < maxp.x do
         local z = minp.z
@@ -137,7 +137,14 @@ local function add_equations(minp, maxp, data, area)
                         equation_position=vector.add(equation_position, direction)
                         local vi = area:index(equation_position.x, equation_position.y, equation_position.z)
 						local symbol = minetest.get_content_id("learntocount:symbol_fix_" .. value)
-						data[vi] = symbol
+                        data[vi] = symbol                        
+                       
+                        if (direction.x == 1) then
+                            param2_data[vi] = 0
+                        else
+                            param2_data[vi] = 3
+                        end
+                                             
 					end
 				
                 end
@@ -148,7 +155,6 @@ local function add_equations(minp, maxp, data, area)
         x = x + math.random(1, 20)
     end
 end
-
 
 minetest.register_on_generated(function(minp, maxp, seed)
 	local debug = "minp="..(minetest.pos_to_string(minp))..", maxp="..(minetest.pos_to_string(maxp))..", seed="..seed
@@ -162,12 +168,14 @@ minetest.register_on_generated(function(minp, maxp, seed)
     print("area:"..minetest.pos_to_string(e1).."/"..minetest.pos_to_string(e2))
 	local area = VoxelArea:new{MinEdge=e1, MaxEdge=e2}
 --    print("index:"..dump(area:index(e1))..":"..dump(area:index(e2)))
-	local data = manip:get_data()
+    local data = manip:get_data()
+    local param2_data = manip:get_param2_data()
 
     add_some_simple_symbols(minp, maxp, data, area)
-    add_equations(minp, maxp, data, area)
+    add_equations(minp, maxp, data, param2_data, area)
 
-	manip:set_data(data)
+    manip:set_data(data)
+    manip:set_param2_data(param2_data)
 	manip:write_to_map()
 	manip:update_map() 
 
