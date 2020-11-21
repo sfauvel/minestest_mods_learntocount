@@ -3,15 +3,17 @@ local function log_position(message, position)
     minetest.log(message..position.x.."/"..position.y.."/"..position.z)
 end
 
-local function is_in_air(data, area, position, length)
+local function is_in_air(data, area, position, direction, length)
     local c_air = minetest.get_content_id("air")	
     local c_water = minetest.get_content_id("default:water_source")
     	
     for index=0,length do
-        local vi = area:index(position.x+index, position.y, position.z)
+        local vi = area:index(position.x, position.y, position.z)
         if data[vi] == c_air or data[vi] == c_water then
             return true
         end 
+
+        position = vector.add(position, direction)
     end
     --log_position("Not in air:", position)
     return false
@@ -129,9 +131,9 @@ local function add_equations(minp, maxp, data, param2_data, area)
             while y < maxp.y do
                 local formula = learntocount.formula_generator.generate()
                 local equation_position=vector.new(x, y, z)		
+                local direction = random_direction()
+                if not (is_in_air(data, area, equation_position, direction, table.getn(formula))) then
              
-                if not (is_in_air(data, area, equation_position, table.getn(formula))) then
-                    local direction = random_direction()
                    
                     for index, value in pairs(formula) do
                         equation_position=vector.add(equation_position, direction)
